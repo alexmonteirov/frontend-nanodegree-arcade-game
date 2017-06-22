@@ -17,8 +17,8 @@ Users can move the hero character by using the main up/right/left/down arrow key
 To run the application:
 
 1. Download the GitHub Zip File or Git Clone the repository onto your local workstation:
- * [Zip File](https://github.com/alexmonteirov/frontend-nanodegree-frogger-arcade-game/archive/frogger-arcade-master.zip)
- * [Git Clone](https://github.com/alexmonteirov/frontend-nanodegree-frogger-arcade-game.git/)
+ * [Zip File](https://github.com/alexmonteirov/frontend-nanodegree-arcade-game/archive/master.zip)
+ * [Git Clone](https://github.com/alexmonteirov/frontend-nanodegree-arcade-game.git)
 
 2. Open the **index.html** file on a browser in your application's directory.
 
