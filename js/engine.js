@@ -13,74 +13,73 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
- var checkCollision = function(anEnemy, player) {
-     // Check for collision between enemy and player
-     for(var i = 0; i < allEnemies.length; i++) {
-       if (player.y + 131 >= anEnemy[i].y + 90 &&
-           player.x + 25 <= anEnemy[i].x + 88 &&
-           player.y + 73 <= anEnemy[i].y + 135 &&
-           player.x + 76 >= anEnemy[i].x + 11) {
-           console.log('I know you can do it! Try again.');
-           player.x = 202.5;
-           player.y = 383;
-       }
+var checkCollision = function(anEnemy, player) {
+    // Check for collision between enemy and player
+    for (var i = 0; i < allEnemies.length; i++) {
+        if (player.y + 131 >= anEnemy[i].y + 90 &&
+            player.x + 25 <= anEnemy[i].x + 88 &&
+            player.y + 73 <= anEnemy[i].y + 135 &&
+            player.x + 76 >= anEnemy[i].x + 11) {
+            console.log('I know you can do it! Try again.');
+            player.x = 202.5;
+            player.y = 383;
+        }
     }
 
-     // Check for Player reaching top of canvas and winning the game
-     // If Player wins, add 1 to the score and level
-     // Pass score as an argument to the increaseDifficulty function
-     if (player.y + 63 <= 0) {
-         player.x = 202.5;
-         player.y = 383;
-         console.log('Congratulations! Good luck on next level!');
+    // Check for Player reaching top of canvas and winning the game
+    // If Player wins, add 1 to the score and level
+    // Pass score as an argument to the increaseDifficulty function
+    if (player.y + 63 <= 0) {
+        player.x = 202.5;
+        player.y = 383;
+        console.log('Congratulations! Good luck on next level!');
 
-         ctx.fillStyle = 'white';
-         ctx.fillRect(0, 0, 505, 171);
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 505, 171);
 
-         score += 1;
-         gameLevel += 1;
-         console.log('Current score: ' + score + ', Current level: ' + gameLevel);
-         increaseDifficulty(score);
+        score += 1;
+        gameLevel += 1;
+        console.log('Current score: ' + score + ', Current level: ' + gameLevel);
+        increaseDifficulty(score);
 
-     }
+    }
 
-     // Check if Player runs into left, bottom, or right canvas walls
-     // Prevent Player from moving beyond canvas wall boundaries
-     if (player.y > 383) {
-         player.y = 383;
-     }
-     if (player.x > 402.5) {
-         player.x = 402.5;
-     }
-     if (player.x < 2.5) {
-         player.x = 2.5;
-     }
- };
+    // Check if Player runs into left, bottom, or right canvas walls
+    // Prevent Player from moving beyond canvas wall boundaries
+    if (player.y > 383) {
+        player.y = 383;
+    }
+    if (player.x > 402.5) {
+        player.x = 402.5;
+    }
+    if (player.x < 2.5) {
+        player.x = 2.5;
+    }
+};
 
- // Increase number of enemies on screen based on player's score
- var increaseDifficulty = function(numEnemies) {
-     // Remove all previous enemies on canvas
-     allEnemies.length = 0;
+// Increase number of enemies on screen based on player's score
+var increaseDifficulty = function(numEnemies) {
+    // Remove all previous enemies on canvas
+    allEnemies.length = 0;
 
-     // load new set of enemies
-     for (var i = 0; i <= numEnemies; i++) {
-         var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+    // load new set of enemies
+    for (var i = 0; i <= numEnemies; i++) {
+        var enemy = new Enemy(-100, Math.random() * 184 + 50, Math.random() * 256, 'images/enemy-bug.png');
 
-         allEnemies.push(enemy);
-     }
- };
+        allEnemies.push(enemy);
+    }
+};
 
- // Function to display player's score
- var displayScoreLevel = function(aScore, aLevel) {
-     var canvas = document.getElementsByTagName('canvas');
-     var firstCanvasTag = canvas[0];
+// Function to display player's score
+var displayScoreLevel = function(aScore, aLevel) {
+    var canvas = document.getElementsByTagName('canvas');
+    var firstCanvasTag = canvas[0];
 
-     // Add Player score and level to a div element created
-     scoreLevelDiv.innerHTML = 'Score: ' + aScore +
-         ' / ' + 'Level: ' + aLevel;
-     document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
- };
+    // Add Player score and level to a div element created
+    scoreLevelDiv.innerHTML = 'Score: ' + aScore +
+        ' / ' + 'Level: ' + aLevel;
+    document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
+};
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -113,7 +112,7 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt,allEnemies,player);
+        update(dt, allEnemies, player);
         render();
         displayScoreLevel(score, gameLevel);
 
@@ -147,9 +146,9 @@ var Engine = (function(global) {
      * functionality this way (you could just implement collision detection
      * on the entities themselves within your app.js file).
      */
-    function update(dt,allEnemies,player) {
+    function update(dt) {
         updateEntities(dt);
-        checkCollision(allEnemies,player);
+        checkCollision(allEnemies, player);
     }
 
     /* This is called by the update function and loops through all of the
@@ -177,12 +176,12 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/water-block.png', // Top row is water
+                'images/stone-block.png', // Row 1 of 3 of stone
+                'images/stone-block.png', // Row 2 of 3 of stone
+                'images/stone-block.png', // Row 3 of 3 of stone
+                'images/grass-block.png', // Row 1 of 2 of grass
+                'images/grass-block.png' // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5,
